@@ -18,6 +18,7 @@ def find_updates(docker_compose):
         tag_current = image["tag"]
         digest = image["digest"]
         target = image["target"]
+        line_no = image["line_no"]
 
         if not target:
             target = "latest"
@@ -36,17 +37,22 @@ def find_updates(docker_compose):
         tag_latest, digest_latest = docker.get_latest_tag(host, repo, tag_current, target, token)
 
         if digest_latest != digest:
-            updates.append((tag_latest, digest_latest))
+            updates.append((line_no, url, tag_latest, digest_latest))
 
     return updates
 
 def find_images(text):
     images = []
     for match in IMAGE_RE.finditer(text):
+        pos = match.pos
+        line_no = text[:pos].count("\n")
         url, tag, digest, target = match.groups()
-        images.append({"url": url, "tag": tag, "digest": digest, "target": target})
+        images.append({"url": url, "tag": tag, "digest": digest, "target": target, "line_no": line_no})
     return images
 
 if __name__ == "__main__":
     import sys
-    print(find_updates(sys.argv[1]))
+    updates = find_updates(sys.argv[1])
+    for update in updates:
+        line, image, tag, digest = update
+        print(f"{line}: {image}:{tag}@{digest}")
