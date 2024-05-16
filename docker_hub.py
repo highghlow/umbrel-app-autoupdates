@@ -4,6 +4,8 @@ import requests
 HOST = "index.docker.io"
 
 def get_repo(url):
+    if "/" not in url:
+        url = "library/"+url
     return url
 
 def get_token(repo):
