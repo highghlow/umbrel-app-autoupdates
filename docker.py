@@ -60,7 +60,6 @@ def get_tags(host, repo, token, manual_url=None):
                             headers={
                                 f"Authorization": f"Bearer {token}"
                             })
-    print(response.text)
     response.raise_for_status()
     json = response.json()
     tags = json["tags"]
