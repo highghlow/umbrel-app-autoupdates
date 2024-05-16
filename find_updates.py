@@ -5,7 +5,7 @@ import docker_hub
 
 import re
 
-IMAGE_RE = re.compile(r"^[ ]*image: (?P<url>\w*(?:\.\w*)*(?:/[^: ]*)*):(?P<tag>[0-9a-z.-]*)@sha256:(?P<digest>[a-z0-9]{64})[ ]*(?:#[ ]*umbrel-autoupdate-target:[ ]*(?P<target>[a-zA-Z0-9]*))?$", re.MULTILINE) # I know that this is cursed. Just plop in into regex101.com to see what it's doing (Select Python on the left)
+IMAGE_RE = re.compile(r"^[ ]*image: (?P<url>\w*(?:\.\w*)*(?:/[^: ]*)*):(?P<tag>[0-9a-z.-]*)@sha256:(?P<digest>[a-z0-9]{64})[ ]*(?:#[ ]*target:[ ]*(?P<target>[a-zA-Z0-9]*))?$", re.MULTILINE) # I know that this is cursed. Just plop in into regex101.com to see what it's doing (Select Python on the left)
 
 def find_updates(docker_compose):
     with open(docker_compose) as f:
