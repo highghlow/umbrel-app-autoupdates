@@ -23,7 +23,10 @@ def get_latest_tag(host, repo, current, target, token):
     print(f"Current digest: ({current})", current_digest, file=sys.stderr)
 
     update_tag = None
-    if current_digest != target_digest:
+    if current_digest == target_digest:
+        print("Update not needed", file=sys.stderr)
+        return current, current_digest
+    else:
         print("Digests don't match. Updating...", file=sys.stderr)
         for tag in reversed(tags):
             print(f"Trying {tag}...", file=sys.stderr)

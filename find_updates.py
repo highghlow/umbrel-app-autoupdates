@@ -6,7 +6,7 @@ import docker_hub
 
 import re
 
-IMAGE_RE = re.compile(r"^[ ]*image: (?P<url>[a-zA-Z0-9./_-]*):(?P<tag>[0-9a-z.-]*)@sha256:(?P<digest>[a-z0-9]{64})[ ]*(?:#[ ]*target:[ ]*(?P<target>[a-zA-Z0-9_-]*))?$", re.MULTILINE) # I know that this is cursed. Just plop in into regex101.com to see what it's doing (Select Python on the left)
+IMAGE_RE = re.compile(r"^[ ]*image: (?P<url>[a-zA-Z0-9./_-]*):(?P<tag>[0-9a-z.-]*)@(?P<digest>sha256:[a-z0-9]{64})[ ]*(?:#[ ]*target:[ ]*(?P<target>[a-zA-Z0-9_-]*))?$", re.MULTILINE) # I know that this is cursed. Just plop in into regex101.com to see what it's doing (Select Python on the left)
 
 def find_updates(docker_compose):
     with open(docker_compose) as f:
@@ -38,6 +38,7 @@ def find_updates(docker_compose):
         tag_latest, digest_latest = docker.get_latest_tag(host, repo, tag_current, target, token)
 
         if digest_latest != digest:
+            print(f"Saving update {digest} => {digest_latest}", file=sys.stderr)
             updates.append((line_no, url, tag_latest, digest_latest))
 
     return updates
