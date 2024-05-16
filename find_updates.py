@@ -44,8 +44,8 @@ def find_updates(docker_compose):
 def find_images(text):
     images = []
     for match in IMAGE_RE.finditer(text):
-        pos = match.pos
-        line_no = text[:pos].count("\n")
+        pos = match.start()
+        line_no = text[:pos].count("\n")+1
         url, tag, digest, target = match.groups()
         images.append({"url": url, "tag": tag, "digest": digest, "target": target, "line_no": line_no})
     return images
