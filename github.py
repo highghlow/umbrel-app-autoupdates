@@ -10,7 +10,6 @@ def get_repo(url):
 def get_token(repo):
     url = f"https://ghcr.io/token?scope=repository:{repo}:pull"
     response = requests.get(url)
-    print(response.text)
     response.raise_for_status()
     json = response.json()
     return json["token"]

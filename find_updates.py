@@ -1,4 +1,5 @@
 import docker
+import sys
 
 import github
 import docker_hub
@@ -32,7 +33,7 @@ def find_updates(docker_compose):
         token = service.get_token(repo)
         host = service.HOST
 
-        print(f"Checking for updates: {host}/{repo}")
+        print(f"Checking for updates: {host}/{repo}", file=sys.stderr)
 
         tag_latest, digest_latest = docker.get_latest_tag(host, repo, tag_current, target, token)
 

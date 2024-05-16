@@ -1,6 +1,7 @@
 import requests
 import functools
 import re
+import sys
 
 import urllib.parse
 urljoin = urllib.parse.urljoin
@@ -10,28 +11,28 @@ LINK_RE = re.compile("<(.*)>; rel=[\"]next[\"]")
 @functools.lru_cache()
 def get_latest_tag(host, repo, current, target, token):
     tags = get_tags(host, repo, token)
-    print(f"Got {len(tags)} tags")
+    print(f"Got {len(tags)} tags", file=sys.stderr)
 
     if target not in tags:
         raise ValueError(f"Target tag ({target}) wasn't found in {repo}")
 
     target_digest = get_digest(host, repo, target, token)
-    print(f"Target digest ({target}):", target_digest)
+    print(f"Target digest ({target}):", target_digest, file=sys.stderr)
 
     current_digest = get_digest(host, repo, current, token)
-    print(f"Current digest: ({current})", current_digest)
+    print(f"Current digest: ({current})", current_digest, file=sys.stderr)
 
     update_tag = None
     if current_digest != target_digest:
-        print("Digests don't match. Updating...")
+        print("Digests don't match. Updating...", file=sys.stderr)
         for tag in reversed(tags):
-            print(f"Trying {tag}...")
+            print(f"Trying {tag}...", file=sys.stderr)
             if tag == target: continue
 
             new_digest = get_digest(host, repo, tag, token)
             if new_digest == target_digest:
                 update_tag = tag
-                print(f"Update found: {update_tag}")
+                print(f"Update found: {update_tag}", file=sys.stderr)
                 break
 
     if not update_tag:
@@ -65,7 +66,7 @@ def get_tags(host, repo, token, manual_url=None):
     tags = json["tags"]
 
     if "Link" in response.headers.keys():
-        print("New page")
+        print("New page", file=sys.stderr)
         href = LINK_RE.match(response.headers["Link"]).groups()[0]
         next_page = urljoin(url, href)
         tags += get_tags(host, None, token, next_page)
