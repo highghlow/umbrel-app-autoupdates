@@ -23,6 +23,7 @@ if __name__ == "__main__":
     updates_raw = sys.stdin.read().split("\n")[:2] # Main update + trailing newline
     updates = []
     for update_line in updates_raw:
+        print(repr(update_line))
         line, image = update_line.split(": ", maxsplit=1)
         line = int(line)
         updates.append((line, image))
