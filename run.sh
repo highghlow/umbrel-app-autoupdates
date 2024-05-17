@@ -30,7 +30,7 @@ update_app() {
 
     cat $app_dir/update
 
-    update_count=$(cat /tmp/$app_id-update | wc -l)
+    update_count=$(cat $app_dir/update | wc -l)
     echo Applying $update_count updates
 
     cat $app_dir/update | python3 $SCRIPT_DIR/apply_updates.py $app_id/docker-compose.yml
