@@ -23,6 +23,7 @@ update_app() {
 
     mkdir -p $app_dir
 
+    git switch master
     git branch -c autoupdate-$app_id || echo "autoupdate-$app_id already exists"
     git switch autoupdate-$app_id
 
