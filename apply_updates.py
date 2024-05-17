@@ -1,7 +1,7 @@
 import re
 import sys
 
-IMAGE_UPDATE_RE = re.compile(r"(?<=image: )[a-zA-Z0-9./_-]*:[0-9a-z.-]*@sha256:[a-z0-9]{64}") # We can be more lenient here since most fintering is happening in `find_updates`
+IMAGE_UPDATE_RE = re.compile(r"^([ ]*image: \"?).*@sha256:[a-f0-9]{64}(\"?.*)") # We can be more lenient here since most fintering is happening in `find_updates`
 
 def apply_updates(contents, updates):
     for line, image in updates:
