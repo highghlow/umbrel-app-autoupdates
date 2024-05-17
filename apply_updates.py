@@ -6,6 +6,7 @@ IMAGE_UPDATE_RE = re.compile(r"^([ ]*image: \"?).*@sha256:[a-f0-9]{64}(\"?.*)") 
 def apply_updates(contents, updates):
     for line, image in updates:
         contents = apply_update(contents, line, image)
+    return contents
 
 def apply_update(contents, line, image):
     lines = contents.split("\n")
