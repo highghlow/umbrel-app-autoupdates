@@ -11,6 +11,10 @@ else
 fi
 
 pushd /tmp/umbrel-apps
+if [[ $(git diff) ]]; then
+    echo "Error: Uncommited changes in umbrel-apps"
+    exit 1
+fi
 
 update_app() {
     app_id=$1
@@ -41,12 +45,16 @@ update_app() {
     # python3 $SCRIPT_DIR/generate_pr_message.py > $app_dir/pr-message
 }
 
-for app in *; do
-    if [[ $app == "README.md" ]]; then
-	sleep 0
-    else
-	update_app $app || echo "$app update failed"
-    fi
-done
+if [ $# -ne 0 ]; then
+    update_app $1
+else
+    for app in *; do
+	if [[ $app == "README.md" ]]; then
+	    sleep 0
+	else
+	    update_app $app || echo "$app update failed"
+	fi
+    done
+fi
 
 popd
