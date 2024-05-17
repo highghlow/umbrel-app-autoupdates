@@ -20,7 +20,7 @@ def modify_line(line, text):
 if __name__ == "__main__":
     import sys
     file = sys.argv[1]
-    updates_raw = sys.stdin.read().split("\n")[:2] # Main update + trailing newline
+    updates_raw = sys.stdin.read().split("\n")[:-2] # Main update + trailing newline
     updates = []
     for update_line in updates_raw:
         print(repr(update_line))
