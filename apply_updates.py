@@ -31,7 +31,7 @@ if __name__ == "__main__":
     with open(file) as f:
         contents = f.read()
 
-    apply_updates(contents, updates)
+    contents = apply_updates(contents, updates)
 
     with open(file, "w") as f:
         f.write(contents)
