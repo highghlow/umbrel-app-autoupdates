@@ -15,6 +15,7 @@ for app in /tmp/umbrel-apps/*; do
     if [[ $appname == "README.md" ]]; then
 	sleep 0
     else
-	python3 $SCRIPT_DIR/test_image_finding_regex.py $app > /dev/null || echo "Failed: $appname"
+	python3 $SCRIPT_DIR/test_image_finding_regex.py $app > /dev/null || echo "Failed (image_finding_regex): $appname"
+	python3 $SCRIPT_DIR/test_replacement_preservation.py $app > /dev/null || echo "Failed (replacement_preservation): $appname"
     fi
 done

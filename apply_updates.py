@@ -3,22 +3,19 @@ import sys
 
 IMAGE_UPDATE_RE = re.compile(r"(?<=image: )[a-zA-Z0-9./_-]*:[0-9a-z.-]*@sha256:[a-z0-9]{64}") # We can be more lenient here since most fintering is happening in `find_updates`
 
-def apply_updates(file, updates):
-    with open(file) as f:
-        contents = f.read()
-
+def apply_updates(contents, updates):
     for line, image in updates:
         contents = apply_update(contents, line, image)
-
-    with open(file, "w") as f:
-        f.write(contents)
 
 def apply_update(contents, line, image):
     lines = contents.split("\n")
 
-    lines[line-1] = IMAGE_UPDATE_RE.sub(image, lines[line-1])
+    lines[line-1] = modify_line(lines[line-1], image)
 
     return "\n".join(lines)
+
+def modify_line(line, text):
+    return IMAGE_UPDATE_RE.sub(r"\1"+text+r"\2", line)
 
 if __name__ == "__main__":
     import sys
@@ -31,4 +28,10 @@ if __name__ == "__main__":
         line = int(line)
         updates.append((line, image))
 
-    apply_updates(file, updates)
+    with open(file) as f:
+        contents = f.read()
+
+    apply_updates(contents, updates)
+
+    with open(file, "w") as f:
+        f.write(contents)
