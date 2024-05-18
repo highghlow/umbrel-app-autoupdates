@@ -42,7 +42,7 @@ update_app() {
     git branch -c $branch_name || echo "autoupdate-$app_id already exists"
     git switch $branch_name
 
-    python3 $SCRIPT_DIR/find_updates.py $app_id/docker-compose.yml > $app_dir/update
+    # python3 $SCRIPT_DIR/find_updates.py $app_id/docker-compose.yml > $app_dir/update
 
     cat $app_dir/update
 
@@ -58,32 +58,10 @@ update_app() {
     fi
 
     git add $app_id
-    git commit -m "Updated Immich: $main_update"
+    # git commit -m "Updated Immich: $main_update"
     git push --set-upstream target $branch_name
 
-    title="Test: Update: Immich $main_update"
-    body="This is an automatic process\n\nIf there is an error, create an issue on https://github.com/highghlow/umbrel-app/autoupdates and don't touch this PR.\nIf you close it, another one will be created"
-
-    response=$(curl -s https://api.github.com/repos/$TARGET_REPO/pulls --data "{
-	\"title\": \"$title\",
-	\"body\": \"$body\",
-	\"head\": \"$SOURCE_OWNER:$branch_name\",
-	\"base\": \"master\"
-    }" -H "Authorization: Bearer $GITHUB_TOKEN")
-
-    if echo "$response" | grep "A pull request already exists"; then
-	echo "Updating existing pull request"
-	pr_number=$(curl -s "https://api.github.com/repos/$TARGET_REPO/pulls?state=open&base=master&head=$SOURCE_OWNER:$branch_name" | jq -r '.[0].number')
-	echo "PR: $TARGET_REPO/$pr_number"
-
-	url="https://api.github.com/repos/$TARGET_REPO/pulls/$pr_number"
-	curl -L \
-	    -X PATCH \
-	    -H "Accept: application/vnd.github+json" \
-	    -H "Authorization: Bearer $GITHUB_TOKEN" \
-	    $url \
-	    -d "{\"title\": \"$title\", \"body\":\"$body\"}" > /dev/null
-    fi
+    python3 $SCRIPT_DIR/create_pr.py $app_id $SOURCE_OWNER $branch_name $TARGET_REPO "$main_update" $GITHUB_TOKEN
 }
 
 if [ $# -ne 0 ]; then
