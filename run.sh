@@ -9,6 +9,11 @@ echo $GITHUB_TOKEN > /dev/null
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+if curl -s https://api.github.com/repos/highghlow/umbrel-app-autoupdates/issues | grep "\"title\": \"HALT"; then
+    echo "Error: HALT issue found"
+    exit 1
+fi
+
 if [ -d /tmp/umbrel-apps ]; then
     echo "Repository exists"
 else
