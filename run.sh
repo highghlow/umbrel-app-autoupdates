@@ -48,7 +48,7 @@ update_app() {
 
     main_update=$(cat $app_dir/update | tail -1)
 
-    cat $app_dir/update | python3 $SCRIPT_DIR/apply_updates.py $app_id/docker-compose.yml
+    cat $app_dir/update | python3 $SCRIPT_DIR/apply_updates.py $app_id
 
     if [[ $(cat $app_dir/update) ]]; then
 	true
