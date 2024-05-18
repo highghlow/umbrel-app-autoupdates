@@ -11,7 +11,7 @@ search_count = 0
 regex_count = 0
 
 for ind, line in enumerate(contents.split("\n")):
-    search = line.find("image:") != -1
+    search = (line.find("image:") != -1) and (line.find("noupdate:") == -1)
     regex = bool(find_updates.IMAGE_RE.match(line))
 
     if search: search_count += 1
