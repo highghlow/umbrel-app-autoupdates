@@ -2,7 +2,9 @@ import sys, requests
 
 BODY="""This pull request was automatically created by the [Umbrel Updater Bot](https://github.com/highghlow/umbrel-app-autoupdates)
 
-If there is an issue, you can stop the bot by [creating a halt issue](https://github.com/highghlow/umbrel-app-autoupdates/issues/new?assignees=highghlow&labels=bug%2C+critical&projects=&template=stop-this-program.md&title=HALT%3A+%3Creason%3E)"""
+If there is an issue, you can stop the bot by [creating a halt issue](https://github.com/highghlow/umbrel-app-autoupdates/issues/new?assignees=highghlow&labels=bug%2C+critical&projects=&template=stop-this-program.md&title=HALT%3A+%3Creason%3E)
+
+NOTE: You will have to update the release notes manually"""
 
 
 def create_pr(app, source_owner, branch_name, target_repo, main_update, token):
