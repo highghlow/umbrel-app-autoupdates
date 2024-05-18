@@ -42,7 +42,7 @@ update_app() {
     git branch -c $branch_name || echo "autoupdate-$app_id already exists"
     git switch $branch_name
 
-    # python3 $SCRIPT_DIR/find_updates.py $app_id/docker-compose.yml > $app_dir/update
+    python3 $SCRIPT_DIR/find_updates.py $app_id/docker-compose.yml > $app_dir/update
 
     cat $app_dir/update
 
@@ -58,7 +58,7 @@ update_app() {
     fi
 
     git add $app_id
-    # git commit -m "Updated Immich: $main_update"
+    git commit -m "Updated Immich: $main_update"
     git push --set-upstream target $branch_name
 
     python3 $SCRIPT_DIR/create_pr.py $app_id $SOURCE_OWNER $branch_name $TARGET_REPO "$main_update" $GITHUB_TOKEN
