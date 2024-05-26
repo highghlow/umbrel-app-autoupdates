@@ -12,4 +12,4 @@ image: <image>:<tag>@sha256:<digest> [# target: <target-tag>] [#!]
 The target tag is the tag you want to track. So, for example if on each release you push a new image to the `release` tag (as well as a `v<version>` tag), you would specify `target: release`. The default target is `latest`
 
 ### Main update
-The `#!` comment mark an image as the main one. This is needed if your app uses additional containers (like databases). If you don't mark the main image, the updater could update your app from `postgres-11` to `postgres-12`. By default the last image is concidered to be the main one.
+The `#!` comment mark an image as the main one. This is needed if your app uses additional containers (like databases). If you don't mark the main image, the updater could set the version in umbrel-app.yml to `postgres-12`. By default the last image is concidered to be the main one.
